@@ -15,17 +15,16 @@ our job easier!
 
 Want to try it? [Sign up for free](http://mayhem4api.forallsecure.com/signup)!
 
-## Example GitHub Actions Integration
+## Fuzzing a gRPC server with Mayhem for API
+
+This repository follows the Mayhem for API documentation on gRPC fuzzing. For
+more details, please visit:
+
+https://mayhem4api.forallsecure.com/docs/grpc.html
+### Example GitHub Actions Integration
 
 This repo contains a simple gRPC API that is tested by Mayhem for API. The
 [GitHub action, `mapi-action`](https://github.com/forallsecure/mapi-action) is
 used to scan and upload results.
 
 [👀 See Latest Results...](https://mayhem4api.forallsecure.com/forallsecure/forallsecure-mapi-grpc-example)
-
-### Fuzzing a gRPC server with Mayhem for API
-
-This repository follows the Mayhem for API documentation on gRPC fuzzing. For
-more details, please visit:
-
-https://mayhem4api.forallsecure.com/docs/grpc.html
