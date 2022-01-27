@@ -1,0 +1,15 @@
+# Do not add .git contents to docker image
+.git
+
+# Ignore generated protobuf files - they will
+# be re-generated as part of building the iamge
+*.pb.go
+
+# Likewise with generated grpc-gateway files
+*.pb.gw.go
+
+# Swagger will be generated as part of image build
+*.swagger.json
+
+# No dockerfiles in docker iamge
+*.Dockerfile

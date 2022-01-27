@@ -1,0 +1,51 @@
+name: 'Mayhem for API gRPC Example'
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: make docker-image
+
+    # Builds the API image and extracts the swagger/OpenAPI
+    # specification to the local file system
+    - name: Extract API Spec
+      run: make swagger
+
+    - name: Run API
+      run: make run
+
+    # Run Mayhem for API
+    - name: Run Mayhem for API to check for vulnerabilities
+      uses: ForAllSecure/mapi-action@v1
+      continue-on-error: true
+      with:
+        mapi-token: ${{ secrets.MAPI_TOKEN }}
+        api-url: http://localhost:8081
+        api-spec: example-api.swagger.json
+        sarif-report: mapi.sarif
+        html-report: mapi.html
+
+    - name: Stop API
+      run: make stop
+
+    # Archive HTML report
+    - name: Archive Mayhem for API report
+      uses: actions/upload-artifact@v2
+      with:
+        name: mapi-report
+        path: mapi.html
+
+    # Upload SARIF file (only available on public repos or github enterprise)
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: mapi.sarif
