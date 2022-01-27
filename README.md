@@ -21,7 +21,7 @@ This repo contains a simple gRPC API that is tested by Mayhem for API. The
 [GitHub action, `mapi-action`](https://github.com/forallsecure/mapi-action) is
 used to scan and upload results.
 
-[👀 See Latest Results...](https://mayhem4api.forallsecure.com/forallsecure/mapi-grpc-example)
+[👀 See Latest Results...](https://mayhem4api.forallsecure.com/forallsecure/forallsecure-mapi-grpc-example)
 
 ### Fuzzing a gRPC server with Mayhem for API
 
