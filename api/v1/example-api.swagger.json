@@ -6,7 +6,7 @@
   },
   "tags": [
     {
-      "name": "Greeter"
+      "name": "UserService"
     }
   ],
   "consumes": [
@@ -16,15 +16,14 @@
     "application/json"
   ],
   "paths": {
-    "/mapi_grpc_example.api.v1.Greeter/SayHello": {
+    "/mapi_grpc_example.api.v1.UserService/AddUser": {
       "post": {
-        "summary": "Sends a greeting",
-        "operationId": "Greeter_SayHello",
+        "operationId": "UserService_AddUser",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1HelloReply"
+              "$ref": "#/definitions/v1UserResult"
             }
           },
           "default": {
@@ -40,45 +39,12 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1HelloRequest"
+              "$ref": "#/definitions/v1AddUserRequest"
             }
           }
         ],
         "tags": [
-          "Greeter"
-        ]
-      }
-    },
-    "/mapi_grpc_example.api.v1.Greeter/SayHelloAgain": {
-      "post": {
-        "summary": "Sends another greeting",
-        "operationId": "Greeter_SayHelloAgain",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1HelloReply"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1HelloRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Greeter"
+          "UserService"
         ]
       }
     }
@@ -111,23 +77,36 @@
         }
       }
     },
-    "v1HelloReply": {
+    "v1AddUserRequest": {
       "type": "object",
       "properties": {
-        "message": {
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      },
+      "title": "Add a new user to the database"
+    },
+    "v1UserResult": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "created": {
           "type": "string"
         }
       },
       "title": "The response message containing the greetings"
-    },
-    "v1HelloRequest": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      },
-      "description": "The request message containing the user's name."
     }
   }
 }

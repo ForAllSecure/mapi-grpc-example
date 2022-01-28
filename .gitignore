@@ -11,5 +11,8 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
+# SQLLite database used for testing should not be persisted
+*.db
+
 # Dependency directories (remove the comment below to include it)
 # vendor/

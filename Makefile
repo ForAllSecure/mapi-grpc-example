@@ -1,4 +1,6 @@
 API = api/v1
+IMAGE_NAME = mapi-grpc-example
+CONTAINER_NAME= mapi-grpc-example
 
 .PHONY: all
 .DEFAULT: all
@@ -9,21 +11,22 @@ api-stubs:
 
 .PHONY: docker-image
 docker-image:
-	docker build -f fuzz.Dockerfile . -t mapi-grpc-example
+	docker build -f fuzz.Dockerfile . -t $(IMAGE_NAME)
 
 .PHONY: swagger
 swagger: docker-image
-	docker run -t --rm -d --name mapi-grpc-example-tmp mapi-grpc-example
-	docker cp mapi-grpc-example-tmp:/opt/grpc-example/api/v1/example-api.swagger.json .
-	docker ps | grep mapi-grpc-example-tmp | cut -d" " -f1 | xargs docker rm -f
+	docker run -t --rm -d --name $(CONTAINER_NAME)-tmp $(IMAGE_NAME)
+	docker cp $(CONTAINER_NAME)-tmp:/opt/grpc-example/api/v1/example-api.swagger.json .
+	docker rm -f $(CONTAINER_NAME)-tmp
 
 .PHONY: run
-run: docker-image
-	docker run -it --rm -d -p 8081:8081 --name mapi-grpc-example mapi-grpc-example
+run: swagger
+	docker rm -f $(CONTAINER_NAME) || true
+	docker run -it --rm -d -p 8081:8081 --name $(CONTAINER_NAME) $(IMAGE_NAME)
 
 .PHONY: stop
 stop:
-	docker rm -f mapi-grpc-example
+	docker rm -f $(CONTAINER_NAME)
 
 clean:
 	$(MAKE) -C $(API) clean

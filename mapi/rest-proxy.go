@@ -27,7 +27,7 @@ func run() error {
 	// Note: Make sure the gRPC server is running properly and accessible
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	err := gw.RegisterGreeterHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	err := gw.RegisterUserServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
 	if err != nil {
 		return err
 	}
@@ -38,7 +38,6 @@ func run() error {
 
 func main() {
 	flag.Parse()
-	glog.Infoln("Proxy started!")
 	defer glog.Flush()
 
 	if err := run(); err != nil {

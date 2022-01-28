@@ -2,20 +2,44 @@ syntax = "proto3";
 package mapi_grpc_example.api.v1;
 option go_package = ".";
 
-// The greeting service definition.
-service Greeter {
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply) {}
-  // Sends another greeting
-  rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+// A simple calculator service
+service UserService {
+  rpc AddUser (AddUserRequest) returns (UserResult) {}
+  rpc GetUsers (GetUsersRequest) returns (UsersResult) {}
+  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResult) {}
 }
 
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
+// Add a new user to the database
+message AddUserRequest {
+  string username = 1;
+  string email = 2;
 }
 
-// The response message containing the greetings
-message HelloReply {
-  string message = 1;
+// Get a collection of users with the given filter
+message GetUsersRequest {
+  string filter = 1;
+}
+
+// Delete a user by ID
+message DeleteUserRequest {
+  int64 id = 1;
+}
+
+// A user
+message UserResult {
+  int64 id = 1;
+  string username = 2;
+  string email = 3;
+  string created = 4;
+}
+
+// A collection of users
+message UsersResult {
+  repeated UserResult users = 1;
+}
+
+// Result from a deleted user
+message DeleteUserResult {
+  // Number of deleted users
+  int64 count = 1;
 }
