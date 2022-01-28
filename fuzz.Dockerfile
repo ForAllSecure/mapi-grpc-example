@@ -52,4 +52,9 @@ EXPOSE 50051 8081
 # Configure supervisor so that the server and proxy are run
 # with supervisor
 ADD mapi/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Working directory is the server folder
+WORKDIR /opt/grpc-example/server
+
+# Launch with supervisor
 ENTRYPOINT ["/usr/bin/supervisord"]

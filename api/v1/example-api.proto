@@ -7,6 +7,7 @@ service UserService {
   rpc AddUser (AddUserRequest) returns (UserResult) {}
   rpc GetUsers (GetUsersRequest) returns (UsersResult) {}
   rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResult) {}
+  rpc CheckReservedName (CheckReservedNameRequest) returns (CheckReservedNameResult) {}
 }
 
 // Add a new user to the database
@@ -25,7 +26,12 @@ message DeleteUserRequest {
   int64 id = 1;
 }
 
-// A user
+// Check to see if a name is reserved
+message CheckReservedNameRequest {
+  string name = 1;
+}
+
+// A user record
 message UserResult {
   int64 id = 1;
   string username = 2;
@@ -33,7 +39,7 @@ message UserResult {
   string created = 4;
 }
 
-// A collection of users
+// A collection of user records
 message UsersResult {
   repeated UserResult users = 1;
 }
@@ -42,4 +48,9 @@ message UsersResult {
 message DeleteUserResult {
   // Number of deleted users
   int64 count = 1;
+}
+
+// Returns reserved names matching the query
+message CheckReservedNameResult {
+  string reserved = 1;
 }

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os/exec"
 	"time"
 
 	"database/sql"
@@ -50,6 +51,9 @@ func createDatabase() *sql.DB {
 	return db
 }
 
+//
+// Add a new user to the database
+//
 func (s *server) AddUser(ctx context.Context, in *pb.AddUserRequest) (*pb.UserResult, error) {
 	currentTime := time.Now()
 	created := currentTime.Format("2006-01-02")
@@ -73,6 +77,9 @@ func (s *server) AddUser(ctx context.Context, in *pb.AddUserRequest) (*pb.UserRe
 	return &pb.UserResult{Id: id, Username: in.Username, Email: in.Email, Created: created}, nil
 }
 
+//
+// Return a list of all users that match the given filter
+//
 func (s *server) GetUsers(ctx context.Context, in *pb.GetUsersRequest) (*pb.UsersResult, error) {
 	// !! Should use a prepared statement here!
 	selectStatement := fmt.Sprintf("SELECT * FROM users WHERE username like '%%%s%%'", in.GetFilter())
@@ -98,9 +105,12 @@ func (s *server) GetUsers(ctx context.Context, in *pb.GetUsersRequest) (*pb.User
 	return &pb.UsersResult{Users: users}, nil
 }
 
+//
+// Delete a User by ID
+//
 func (s *server) DeleteUser(ctx context.Context, in *pb.DeleteUserRequest) (*pb.DeleteUserResult, error) {
 	// !! Should use a prepared statement here!
-	deleteStatement := fmt.Sprintf("DELETE users WHERE id=%d;", in.Id)
+	deleteStatement := fmt.Sprintf("DELETE FROM users WHERE uid=%d;", in.GetId())
 
 	res, err := db.Exec(deleteStatement)
 	if err != nil {
@@ -111,8 +121,25 @@ func (s *server) DeleteUser(ctx context.Context, in *pb.DeleteUserRequest) (*pb.
 	if err != nil {
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Failed to delete user - %s", err.Error()))
 	}
+	if count == 0 {
+		return nil, status.Error(codes.NotFound, fmt.Sprintf("Could not find user with ID - %d", in.GetId()))
+	}
 
 	return &pb.DeleteUserResult{Count: count}, nil
+}
+
+//
+// Check the list or reserved names to see if there is a match
+//
+func (s *server) CheckReservedName(ctx context.Context, in *pb.CheckReservedNameRequest) (*pb.CheckReservedNameResult, error) {
+	cmd := exec.Command("/bin/bash", "-c", fmt.Sprintf("cat reserved-names.txt | grep %s || true ", in.GetName()))
+
+	out, err := cmd.Output()
+	if err != nil {
+		return nil, status.Error(codes.Internal, fmt.Sprintf("Failed to check reserved name - %s", err.Error()))
+	}
+
+	return &pb.CheckReservedNameResult{Reserved: fmt.Sprintf("%s", out)}, nil
 }
 
 func main() {

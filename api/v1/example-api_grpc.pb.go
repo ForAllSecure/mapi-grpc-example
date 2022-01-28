@@ -25,6 +25,7 @@ type UserServiceClient interface {
 	AddUser(ctx context.Context, in *AddUserRequest, opts ...grpc.CallOption) (*UserResult, error)
 	GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*UsersResult, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResult, error)
+	CheckReservedName(ctx context.Context, in *CheckReservedNameRequest, opts ...grpc.CallOption) (*CheckReservedNameResult, error)
 }
 
 type userServiceClient struct {
@@ -62,6 +63,15 @@ func (c *userServiceClient) DeleteUser(ctx context.Context, in *DeleteUserReques
 	return out, nil
 }
 
+func (c *userServiceClient) CheckReservedName(ctx context.Context, in *CheckReservedNameRequest, opts ...grpc.CallOption) (*CheckReservedNameResult, error) {
+	out := new(CheckReservedNameResult)
+	err := c.cc.Invoke(ctx, "/mapi_grpc_example.api.v1.UserService/CheckReservedName", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -69,6 +79,7 @@ type UserServiceServer interface {
 	AddUser(context.Context, *AddUserRequest) (*UserResult, error)
 	GetUsers(context.Context, *GetUsersRequest) (*UsersResult, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResult, error)
+	CheckReservedName(context.Context, *CheckReservedNameRequest) (*CheckReservedNameResult, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -84,6 +95,9 @@ func (UnimplementedUserServiceServer) GetUsers(context.Context, *GetUsersRequest
 }
 func (UnimplementedUserServiceServer) DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResult, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
+}
+func (UnimplementedUserServiceServer) CheckReservedName(context.Context, *CheckReservedNameRequest) (*CheckReservedNameResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckReservedName not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -152,6 +166,24 @@ func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_CheckReservedName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckReservedNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).CheckReservedName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mapi_grpc_example.api.v1.UserService/CheckReservedName",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).CheckReservedName(ctx, req.(*CheckReservedNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -170,6 +202,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteUser",
 			Handler:    _UserService_DeleteUser_Handler,
+		},
+		{
+			MethodName: "CheckReservedName",
+			Handler:    _UserService_CheckReservedName_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
