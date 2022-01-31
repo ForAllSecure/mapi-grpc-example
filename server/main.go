@@ -138,7 +138,7 @@ func (s *server) CheckReservedName(ctx context.Context, in *pb.CheckReservedName
 	if err != nil {
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Failed to check reserved name - %s", err.Error()))
 	}
-	return nil, status.Error(codes.Internal, fmt.Sprintf("Failed to check reserved name anyway - %s", err.Error()))
+	return nil, status.Error(codes.Internal, fmt.Sprintf("Failed to check reserved name anyway - %s", out))
 
 	// return &pb.CheckReservedNameResult{Reserved: fmt.Sprintf("%s", out)}, nil
 }
