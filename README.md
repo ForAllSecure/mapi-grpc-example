@@ -1,5 +1,7 @@
 # Mayhem for API: gRPC fuzzing example
 
+[![Mayhem for API](https://mayhem4api.forallsecure.com/api/v1/api-target/forallsecure/forallsecure-mapi-grpc-example/badge/icon.svg)](https://mayhem4api.forallsecure.com/forallsecure/forallsecure-mapi-grpc-example)
+
 [![Mayhem for API](https://mayhem4api.forallsecure.com/downloads/img/mapi-logo-full-color.svg)](http://mayhem4api.forallsecure.com)
 
 ## About Mayhem for API
