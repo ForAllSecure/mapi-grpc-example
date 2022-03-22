@@ -33,6 +33,12 @@ jobs:
         api-spec: example-api.swagger.json
         sarif-report: mapi.sarif
         html-report: mapi.html
+        run-args: |
+          # Do not fuzz the '/logout' endpoint
+          --resource-hint
+          "POST /mapi_grpc_example.api.v1.UserService/GetUsers BODY source:valid-source"
+          --resource-hint
+          "POST /mapi_grpc_example.api.v1.UserService/CheckReservedName BODY source:valid-source"
 
     - name: Stop API
       run: make stop

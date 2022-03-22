@@ -48,6 +48,38 @@
         ]
       }
     },
+    "/mapi_grpc_example.api.v1.UserService/CheckReservedName": {
+      "post": {
+        "operationId": "UserService_CheckReservedName",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CheckReservedNameResult"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CheckReservedNameRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
     "/mapi_grpc_example.api.v1.UserService/DeleteUser": {
       "post": {
         "operationId": "UserService_DeleteUser",
@@ -153,6 +185,27 @@
       },
       "title": "Add a new user to the database"
     },
+    "v1CheckReservedNameRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "title": "Check to see if a name is reserved"
+    },
+    "v1CheckReservedNameResult": {
+      "type": "object",
+      "properties": {
+        "reserved": {
+          "type": "string"
+        }
+      },
+      "title": "Returns reserved names matching the query"
+    },
     "v1DeleteUserRequest": {
       "type": "object",
       "properties": {
@@ -179,6 +232,9 @@
       "properties": {
         "filter": {
           "type": "string"
+        },
+        "source": {
+          "type": "string"
         }
       },
       "title": "Get a collection of users with the given filter"
@@ -200,7 +256,7 @@
           "type": "string"
         }
       },
-      "title": "A user"
+      "title": "A user record"
     },
     "v1UsersResult": {
       "type": "object",
@@ -212,7 +268,7 @@
           }
         }
       },
-      "title": "A collection of users"
+      "title": "A collection of user records"
     }
   }
 }
