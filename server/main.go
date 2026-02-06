@@ -81,6 +81,10 @@ func (s *server) AddUser(ctx context.Context, in *pb.AddUserRequest) (*pb.UserRe
 // Return a list of all users that match the given filter
 //
 func (s *server) GetUsers(ctx context.Context, in *pb.GetUsersRequest) (*pb.UsersResult, error) {
+	if in.Source != "valid-source" {
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("Invalid Source"))
+	}
+
 	// !! Should use a prepared statement here!
 	selectStatement := fmt.Sprintf("SELECT * FROM users WHERE username like '%%%s%%'", in.GetFilter())
 	rows, err := db.Query(selectStatement)
@@ -125,13 +129,19 @@ func (s *server) DeleteUser(ctx context.Context, in *pb.DeleteUserRequest) (*pb.
 		return nil, status.Error(codes.NotFound, fmt.Sprintf("Could not find user with ID - %d", in.GetId()))
 	}
 
-	return &pb.DeleteUserResult{Count: count}, nil
+	return nil, status.Error(codes.Internal, "Failed to delete user anyway")
+
+	// return &pb.DeleteUserResult{Count: count}, nil
 }
 
 //
 // Check the list or reserved names to see if there is a match
 //
 func (s *server) CheckReservedName(ctx context.Context, in *pb.CheckReservedNameRequest) (*pb.CheckReservedNameResult, error) {
+	if in.Source != "valid-source" {
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("Invalid Source"))
+	}
+
 	cmd := exec.Command("/bin/bash", "-c", fmt.Sprintf("cat reserved-names.txt | grep %s || true ", in.GetName()))
 
 	out, err := cmd.Output()

@@ -191,6 +191,9 @@
       "properties": {
         "name": {
           "type": "string"
+        },
+        "source": {
+          "type": "string"
         }
       },
       "title": "Check to see if a name is reserved"
@@ -229,6 +232,9 @@
       "type": "object",
       "properties": {
         "filter": {
+          "type": "string"
+        },
+        "source": {
           "type": "string"
         }
       },
