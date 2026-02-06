@@ -1,10 +1,9 @@
 # Builds the gRPC server fronted by a REST API gateway
 #
 # See also
-#  - Mayhem for API: https://mayhem4api.forallsecure.com/
-#  - grpc-gateyway: https://github.com/grpc-ecosystem/grpc-gateway
+#  - grpc-gateway: https://github.com/grpc-ecosystem/grpc-gateway
 #
-FROM golang:1.17.6
+FROM golang:1.25.7
 
 # Install protoc, protocol buffer compiler
 RUN apt update && \
