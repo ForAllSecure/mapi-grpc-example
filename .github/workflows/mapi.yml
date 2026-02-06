@@ -28,7 +28,7 @@ jobs:
       uses: ForAllSecure/mapi-action@v1
       continue-on-error: true
       with:
-        mapi-token: ${{ secrets.MAPI_TOKEN }}
+        mayhem-token: ${{ secrets.MAPI_TOKEN }}
         api-url: http://localhost:8081
         api-spec: example-api.swagger.json
         sarif-report: mapi.sarif
@@ -58,6 +58,6 @@ jobs:
 
     # Upload SARIF file (only available on public repos or github enterprise)
     - name: Upload SARIF file
-      uses: github/codeql-action/upload-sarif@v3
+      uses: github/codeql-action/upload-sarif@v4
       with:
         sarif_file: mapi.sarif
