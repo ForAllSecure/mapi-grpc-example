@@ -2,6 +2,9 @@ syntax = "proto3";
 package mapi_grpc_example.api.v1;
 option go_package = ".";
 
+// All request must include a 'source' value exactly equal to
+// 'valid-source', otherwise the request will be dropped.
+
 // A simple calculator service
 service UserService {
   rpc AddUser (AddUserRequest) returns (UserResult) {}
@@ -19,6 +22,7 @@ message AddUserRequest {
 // Get a collection of users with the given filter
 message GetUsersRequest {
   string filter = 1;
+  string source = 2;
 }
 
 // Delete a user by ID
@@ -29,6 +33,7 @@ message DeleteUserRequest {
 // Check to see if a name is reserved
 message CheckReservedNameRequest {
   string name = 1;
+  string source = 2;
 }
 
 // A user record
