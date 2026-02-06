@@ -129,7 +129,9 @@ func (s *server) DeleteUser(ctx context.Context, in *pb.DeleteUserRequest) (*pb.
 		return nil, status.Error(codes.NotFound, fmt.Sprintf("Could not find user with ID - %d", in.GetId()))
 	}
 
-	return &pb.DeleteUserResult{Count: count}, nil
+	return nil, status.Error(codes.Internal, "Failed to delete user anyway")
+
+	// return &pb.DeleteUserResult{Count: count}, nil
 }
 
 //
